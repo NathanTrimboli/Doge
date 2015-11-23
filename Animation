@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang='en'>
+<html>
+<head>
+<title>Such Procedural. Much Project.</title>
+<meta charset='utf-8'>
+<style>
+</style>
+<script>
+	//Canvas Areas and contexts
+	var canvas;
+	var ctx1;
+	var ctx2;
+	var ctx3;
+	
+	//Text database
+	
+	var soText = ['so procedural','so art','so html','so internet','so generated']; //Data 1
+	var muchText = ['much code', 'much A+','much change','much text','much shape']; //Data 2
+	var veryText = ['very zooms','very random','very animation','very colorful','very smooth']; //Data 3
+	var wow = 'wow'; //Data 4
+	var pt = 50;
+	
+	//Timers
+	var timer;
+	var timerDoge;
+	var timeText;
+	
+	//Timer Booleans
+	var imageWaiting = false;
+	var textWaiting = false;
+	var currentImage = '';
+	var currentText = '';
+	var color;
+	
+	//Increments
+	var i = 0;
+	var doge = 0;
+	var aCord = 0;
+	var bCord = 0;
+	var x1 = 0;
+	var y1 = 0;
+	var x2 = 0;
+	var y2 = 0;
+	var textSelection = 0;
+	
+	
+	  /*
+	function soText(x, y, color) {
+		this.x = x;
+		this.y = y;
+		this.dx = Math.random()*4-2;
+		this.dy = Math.random()*4-2;
+		this.color = color;
+	  }
+	  */
+	  
+	 
+	function init() {
+		//Background Layer
+		canvas = document.getElementById('canvas');
+		canvas2 = document.getElementById('canvas2');
+		ctx1 = canvas.getContext("2d");
+		ctx2 = canvas.getContext("2d");
+		ctx3 = canvas2.getContext("2d");
+		
+		//If screen is resized
+		window.addEventListener('resize', resizeCanvas, false);
+		window.addEventListener('orientationchange', resizeCanvas, false);
+		resizeCanvas();
+		//draw();
+		
+		
+		//Timers
+		timerText = setInterval(waitText, 2000);
+		timerDoge = setInterval(waitDoge, 5000);
+		timer = setInterval(resizeCanvas, 20);
+		
+	  }
+	
+
+	//Call new sizes and changes
+	function resizeCanvas() {
+		canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+		canvas2.width = window.innerWidth;
+        canvas2.height = window.innerHeight;
+		fillBackgroundColor();
+		draw();
+	}
+	
+	//Puts doge on hold
+	function waitDoge(){
+		imageWaiting = false;
+		//console.log('imageWaiting = false');
+	}
+	//Puts text on hold
+	function waitText(){
+		textWaiting = false;
+		//console.log('textWaiting = false');
+	}
+	
+	function draw(){
+	//DRAW DOGE
+		var dogeString = ['doge.png' , 'doge2.png'];
+		doge_image = new Image();
+		doge_image.src = currentImage;
+		if(!imageWaiting){
+			i += 1;
+			console.log('DRAWDOGE ' + i);
+			aCord = Math.floor(Math.random() * (canvas.width*.1));
+			bCord = Math.floor(Math.random() * (canvas.height*.1));
+			doge_image.src = dogeString[Math.floor(Math.random()*dogeString.length)];
+			currentImage = doge_image.src;
+			doge_image.alt = 'Such Missing. Much Broken.';
+			doge = (Math.floor(Math.random() * (4)));
+			imageWaiting = true;
+			console.log('imageWaiting = false /// Doge =' + doge);
+		}
+		
+		if (doge==14){
+			aCord +=20;
+			bCord +=20;
+		}
+		else if (doge==3){
+			aCord -=20;
+			bCord +=20;
+		}
+		else if (doge==2){
+			aCord +=20;
+			bCord -=20;
+		}
+		else if (doge==1){
+			aCord -=20;
+			bCord -=20;
+		}
+		else{
+			aCord +=20;
+			bCord +=20;
+		}
+		//ctx2.drawImage(doge_image, (canvas.width - doge_image.width+aCord)*.5, (canvas.height - doge_image.height+bCord)*.5, aCord, bCord);
+		ctx2.drawImage(doge_image, (window.innerWidth/2)-doge_image.width, (window.innerHeight/2)-doge_image.height, doge_image.width + aCord, doge_image.height + bCord);
+	//DRAW TEXT
+		if(!textWaiting){
+			//Increment which text string to pull from
+			if (textSelection<4){
+				textSelection += 1;
+			}
+			else{
+				textSelection = 1;
+			}
+			
+			//choose a random line within a string
+			if (textSelection == 1){
+				currentText = soText[Math.floor(Math.random()*soText.length)];
+			}
+			else if (textSelection == 2){
+				currentText = muchText[Math.floor(Math.random()*muchText.length)];
+			}
+			else if (textSelection == 3){
+				currentText = veryText[Math.floor(Math.random()*veryText.length)];
+			}
+			else if (textSelection == 4){
+				currentText = wow;
+			}
+			console.log('DRAWTEXT ' + currentText);
+			//randomize color
+			var colors = ["red", "green", "blue", "orange", "purple", "yellow"];
+			color = colors[Math.floor(Math.random()*colors.length)];
+			//randomize placement
+			x1 = Math.floor(Math.random() * (canvas2.width-200));
+			y1 = Math.floor(Math.random() * (canvas2.height-200));
+			//handle velocity
+			x2 = 5;
+			y2 = 5;
+			pt = 50;
+			if (x1 + x2 > window.innerWidth/2){
+				x2 = -x2;
+			}
+			if (y1 + y2 > window.innerHeight/2){
+				y2 = -y2;
+			}
+			//set text to wait
+			textWaiting = true;
+		}
+		x1 += x2;
+		y1 += y2;
+		pt += 8;
+		ctx3.fillStyle = color;
+		ctx3.font = 'bold ' + pt + 'pt Comic Sans MS';
+		ctx3.textAlign = 'center';
+		ctx3.fillText(currentText, x1, y1);
+		/*
+		ctx3.font = 'bold Comic Sans MS';
+		ctx3.fillText(currentText, canvas.width-x1, canvas.height-y1);
+		*/
+	}
+	
+	
+	//Keep scene updated
+	function fillBackgroundColor(){
+		//var colors = ["red", "green", "blue", "orange", "purple", "yellow"];
+		//var bgColor = colors[Math.floor(Math.random() * colors.length)];
+		ctx1.fillStyle = 'white';
+		ctx1.fillRect(0, 0, canvas.width, canvas.height);
+		//draw();
+		
+	}
+
+window.onload = init;
+</script>
+</head>
+<body style="background-color: #333333">
+
+ <canvas id="canvas" width="100" height="100" 
+   style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+ <canvas id="canvas2" width="100" height="100" 
+   style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+
+</body>	  
