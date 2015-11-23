@@ -12,6 +12,7 @@
 	var ctx1;
 	var ctx2;
 	var ctx3;
+	var ctx4;
 	
 	//Text database
 	
@@ -25,16 +26,23 @@
 	var timer;
 	var timerDoge;
 	var timeText;
+	var timerShape;
+	var timerShapeReset;
 	
 	//Timer Booleans
 	var imageWaiting = false;
 	var textWaiting = false;
+	var shapeWaiting = false;
+	var shapeReset = false;
 	var currentImage = '';
 	var currentText = '';
 	var color;
 	
 	//Increments
 	var i = 0;
+	var c =0;
+	var x = 0;
+	var y = 0;
 	var doge = 0;
 	var aCord = 0;
 	var bCord = 0;
@@ -44,25 +52,23 @@
 	var y2 = 0;
 	var textSelection = 0;
 	
+	//Shape stuff
+	var xCircle = 0;
+	var yCircle = 0;
+	var xSquare = 0;
+	var ySquare = 0;
 	
-	  /*
-	function soText(x, y, color) {
-		this.x = x;
-		this.y = y;
-		this.dx = Math.random()*4-2;
-		this.dy = Math.random()*4-2;
-		this.color = color;
-	  }
-	  */
 	  
-	 
 	function init() {
 		//Background Layer
 		canvas = document.getElementById('canvas');
 		canvas2 = document.getElementById('canvas2');
+		canvas3 =  document.getElementById('canvas3');
 		ctx1 = canvas.getContext("2d");
 		ctx2 = canvas.getContext("2d");
 		ctx3 = canvas2.getContext("2d");
+		ctx4 = canvas3.getContext("2d");
+		ctx5 = canvas3.getContext("2d");
 		
 		//If screen is resized
 		window.addEventListener('resize', resizeCanvas, false);
@@ -72,6 +78,8 @@
 		
 		
 		//Timers
+		timerShapeReset = setInterval(resetShape, 20000);
+		timerShape = setInterval(waitShape, 100);
 		timerText = setInterval(waitText, 2000);
 		timerDoge = setInterval(waitDoge, 5000);
 		timer = setInterval(resizeCanvas, 20);
@@ -85,6 +93,8 @@
         canvas.height = window.innerHeight;
 		canvas2.width = window.innerWidth;
         canvas2.height = window.innerHeight;
+		canvas3.width = window.innerWidth;
+        canvas3.height = window.innerHeight;
 		fillBackgroundColor();
 		draw();
 	}
@@ -99,6 +109,44 @@
 		textWaiting = false;
 		//console.log('textWaiting = false');
 	}
+	//Puts shapes on hold
+	function waitShape(){
+		shapeWaiting = false;
+		//console.log('shapeWaiting = false');
+	}
+	
+	//Resets shape
+	function resetShape(){
+		shapeReset = true;
+		//console.log('imageWaiting = false');
+	}
+	function drawCircle() {
+		var radius = 100;
+		//Cordinates
+		x = 10 + xCircle;
+		y = 150 + yCircle;
+		ctx4.beginPath();
+		//Create circle
+		ctx4.arc(x, y, radius, 0, degreesToRadians(360), true);
+		ctx4.fill();
+		xCircle += 500;
+		console.log('draw circle ' + c);
+		console.log(xCircle);
+	}
+	
+	function drawSquare() {
+		var radius = 200;
+		//Cordinates
+		x = canvas.width - 10 + xSquare;
+		y = 300 + ySquare;
+		ctx5.beginPath();
+		//Create square
+		ctx5.rect(x,y,radius,radius);
+		ctx5.fill();
+		xSquare-= 500;
+		console.log('draw square ' + c);
+		console.log(xSquare);
+	}
 	
 	function draw(){
 	//DRAW DOGE
@@ -107,7 +155,7 @@
 		doge_image.src = currentImage;
 		if(!imageWaiting){
 			i += 1;
-			console.log('DRAWDOGE ' + i);
+			//console.log('DRAWDOGE ' + i);
 			aCord = Math.floor(Math.random() * (canvas.width*.1));
 			bCord = Math.floor(Math.random() * (canvas.height*.1));
 			doge_image.src = dogeString[Math.floor(Math.random()*dogeString.length)];
@@ -115,7 +163,7 @@
 			doge_image.alt = 'Such Missing. Much Broken.';
 			doge = (Math.floor(Math.random() * (4)));
 			imageWaiting = true;
-			console.log('imageWaiting = false /// Doge =' + doge);
+			//console.log('imageWaiting = false /// Doge =' + doge);
 		}
 		
 		if (doge==14){
@@ -140,6 +188,7 @@
 		}
 		//ctx2.drawImage(doge_image, (canvas.width - doge_image.width+aCord)*.5, (canvas.height - doge_image.height+bCord)*.5, aCord, bCord);
 		ctx2.drawImage(doge_image, (window.innerWidth/2)-doge_image.width, (window.innerHeight/2)-doge_image.height, doge_image.width + aCord, doge_image.height + bCord);
+	
 	//DRAW TEXT
 		if(!textWaiting){
 			//Increment which text string to pull from
@@ -194,6 +243,36 @@
 		ctx3.font = 'bold Comic Sans MS';
 		ctx3.fillText(currentText, canvas.width-x1, canvas.height-y1);
 		*/
+		
+		//Draw Shapes
+		if (!shapeReset){
+			if (!shapeWaiting){
+			
+				if (c < 1000) {
+					c++;
+					drawCircle();
+					drawSquare();
+					shapeWaiting = true;
+				}
+				if (c == 10){
+					c = 0;
+					xCircle = 0;
+					xSquare = 0;
+					yCircle += 200;
+					ySquare += 200;
+					
+					shapeWaiting = true;
+				}
+			}
+		}
+		else if(shapeReset){
+			xCircle = 0;
+			xSquare = 0;
+			yCircle = 0;
+			ySquare = 0;
+			shapeWaiting = true;
+			shapeReset = false;
+		}
 	}
 	
 	
@@ -206,6 +285,11 @@
 		//draw();
 		
 	}
+	
+	//Convert degrees to number based radians
+	function degreesToRadians(degrees) {
+		return (degrees * Math.PI)/180;
+	}
 
 window.onload = init;
 </script>
@@ -216,5 +300,7 @@ window.onload = init;
    style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
  <canvas id="canvas2" width="100" height="100" 
    style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+ <canvas id="canvas3" width="100" height="100" 
+   style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
 
 </body>	  
