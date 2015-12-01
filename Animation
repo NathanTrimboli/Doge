@@ -15,6 +15,7 @@
 	var ctx4;
 	var ctx5;
 	var ctx6;
+	var ctx7;
 	
 	//Colors
 	var colors = ["red", "green", "blue", "orange", "purple", "yellow"];
@@ -64,10 +65,13 @@
 	var ySquare = 0;
 	var xTriangle = 0;
 	var yTriangle = 0;
-	var circleColor = 'red';
+	var xHeart = 0;
+	var yHeart = 0;
+	var circleColor = 'orange';
 	var squareColor = 'blue';
 	var triangleColor = 'green';
 	var starColor = 'yellow';
+	var heartColor = 'red';
 	//Star
 	var cx = 0;
 	var cy = 650;
@@ -88,6 +92,7 @@
 		ctx5 = canvas3.getContext("2d");
 		ctx6 = canvas3.getContext("2d");
 		ctx7 = canvas3.getContext("2d");
+		ctx8 = canvas3.getContext("2d");
 		
 		//If screen is resized
 		window.addEventListener('resize', resizeCanvas, false);
@@ -260,10 +265,10 @@
 		//Cordinates
 		x = canvas.width - 10 + xSquare;
 		y = 400 + ySquare;
+		ctx5.fillStyle = squareColor;
 		ctx5.lineWidth=5;
 		ctx5.strokeStyle='black';
 		ctx5.stroke();
-		ctx5.fillStyle = squareColor;
 		ctx5.beginPath();
 		//Create square
 		ctx5.rect(x,y,radius,radius);
@@ -271,9 +276,6 @@
 		
 		//console.log('draw square ' + c);
 		//console.log(xSquare);
-		
-		//console.log('draw triangle ' + c);
-		//console.log(xTriangle);
 		
 		//DRAW STAR
 		var rot = Math.PI / 2 * 3;
@@ -308,17 +310,39 @@
 		var triangleHeight = 85;
 		x = 10 + xTriangle;
 		y = 20 + yTriangle;
-		
-		ctx6.fillStyle = triangleColor;
+
 		ctx6.lineWidth=5;
 		ctx6.strokeStyle='black';
 		ctx6.stroke();
+		ctx6.fillStyle = triangleColor;
 		ctx6.beginPath();
 		ctx6.moveTo(x,y);
 		ctx6.lineTo(x + triangleWidth / 2, y + triangleHeight);
 		ctx6.lineTo(x - triangleWidth / 2, y + triangleHeight);
 		ctx6.closePath();
 		ctx6.fill();
+		
+		//console.log('draw triangle ' + c);
+		//console.log(xTriangle);
+		
+		//DRAW HEART
+		ctx8.beginPath();
+		x = 75;
+		y = 40;
+		xHeart = canvas.width;
+		yHeart;
+		ctx8.moveTo(xHeart-x,xHeart-y);
+		ctx8.bezierCurveTo(xHeart-75,xHeart-37,xHeart-70,xHeart-25,xHeart-50,xHeart-25);
+		ctx8.bezierCurveTo(xHeart-20,xHeart-25,xHeart-20,xHeart-62.5,xHeart-20,xHeart-62.5);
+		ctx8.bezierCurveTo(xHeart-20,xHeart-80,xHeart-40,xHeart-102,xHeart-75,xHeart-120);
+		ctx8.bezierCurveTo(xHeart-110,xHeart-102,xHeart-130,xHeart-80,xHeart-130,xHeart-62.5);
+		ctx8.bezierCurveTo(xHeart-130,xHeart-62.5,xHeart-130,xHeart-25,xHeart-100,xHeart-25);
+		ctx8.bezierCurveTo(xHeart-85,xHeart-25,xHeart-75,xHeart-37,xHeart-75,xHeart-40);
+		ctx7.fillStyle = heartColor;
+		ctx7.lineWidth=5;
+		ctx7.strokeStyle='black';
+		ctx7.stroke();
+		ctx8.fill();
 		
 		//Reset Draw Shapes
 		if (cy < canvas3.height + 50){
@@ -347,6 +371,7 @@
 					squareColor = colors[Math.floor(Math.random()*colors.length)];
 					triangleColor = colors[Math.floor(Math.random()*colors.length)];
 					starColor = colors[Math.floor(Math.random()*colors.length)];
+					heartColor = colors[Math.floor(Math.random()*colors.length)];
 					shapeWaiting = true;
 					console.log('SHIFT SHAPES');
 				}
