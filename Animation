@@ -66,6 +66,13 @@
 	var circleColor;
 	var squareColor;
 	var triangleColor;
+	var starColor;
+	//Star
+	var cx = 0;
+	var cy = 450;
+	var spikes = 12; 
+	var outerRadius = 50; 
+	var innerRadius = 40;
 	
 	function init() {
 		//Background Layer
@@ -78,6 +85,7 @@
 		ctx4 = canvas3.getContext("2d");
 		ctx5 = canvas3.getContext("2d");
 		ctx6 = canvas3.getContext("2d");
+		ctx7 = canvas3.getContext("2d");
 		
 		//If screen is resized
 		window.addEventListener('resize', resizeCanvas, false);
@@ -90,7 +98,7 @@
 		timerShapeReset = setInterval(resetShape, 10000);
 		timerShape = setInterval(waitShape, 100);
 		timerText = setInterval(waitText, 2000);
-		timerDoge = setInterval(waitDoge, 5000);
+		timerDoge = setInterval(waitDoge, 3000);
 		timer = setInterval(resizeCanvas, 20);
 		
 	  }
@@ -235,6 +243,12 @@
 					drawCircle();
 					drawSquare();
 					drawTraingle();
+					drawStar();
+					xCircle += 100;
+					xSquare-= 100;
+					xTriangle += 100;
+					cx+= 100;
+					
 					shapeWaiting = true;
 				}
 				if (c == 20){
@@ -242,13 +256,17 @@
 					xCircle = 0;
 					xSquare = 0;
 					xTriangle = 0;
+					cx = 0;
 					yCircle += 100;
 					ySquare += 100;
 					yTriangle += 100;
+					cy += 100;
 					circleColor = colors[Math.floor(Math.random()*colors.length)];
 					squareColor = colors[Math.floor(Math.random()*colors.length)];
 					triangleColor = colors[Math.floor(Math.random()*colors.length)];
+					starColor = colors[Math.floor(Math.random()*colors.length)];
 					shapeWaiting = true;
+					console.log('SHIFT SHAPES');
 				}
 			}
 		}
@@ -256,11 +274,14 @@
 			xCircle = 0;
 			xSquare = 0;
 			xTriangle = 0;
+			cx = 0;
 			yCircle = 0;
 			ySquare = 0;
 			ytriangle = 0;
+			cy = 450;
 			shapeWaiting = true;
 			shapeReset = false;
+			console.log('RESET SHAPES');
 		}
 	}
 	
@@ -276,7 +297,7 @@
 		//Create circle
 		ctx4.arc(x, y, radius, 0, degreesToRadians(360), true);
 		ctx4.fill();
-		xCircle += 100;
+		
 		//console.log('draw circle ' + c);
 		//console.log(xCircle);
 	}
@@ -287,13 +308,14 @@
 		x = canvas.width - 10 + xSquare;
 		y = 250 + ySquare;
 		ctx5.fillStyle = squareColor;
+		ctx5.lineWidth=5;
 		ctx5.strokeStyle='black';
 		ctx5.stroke();
 		ctx5.beginPath();
 		//Create square
 		ctx5.rect(x,y,radius,radius);
 		ctx5.fill();
-		xSquare-= 100;
+		
 		//console.log('draw square ' + c);
 		//console.log(xSquare);
 	}
@@ -305,6 +327,7 @@
 		//s = 100;
 		
 		ctx6.fillStyle = triangleColor;
+		ctx6.lineWidth=5;
 		ctx6.strokeStyle='black';
 		ctx6.stroke();
 		
@@ -319,12 +342,40 @@
 		*/
 		ctx6.closePath();
 		ctx6.fill();
-		xTriangle += 100;
+		
 		//console.log('draw triangle ' + c);
 		//console.log(xTriangle);
 	}
 	
-	
+	function drawStar() {
+		var rot = Math.PI / 2 * 3;
+		x = cx;
+		y = cy;
+		var step = Math.PI / spikes;
+
+		ctx7.strokeSyle = "#000";
+		ctx7.fillStyle = starColor;
+		ctx7.beginPath();
+		ctx7.moveTo(cx, cy - outerRadius)
+		for (i = 0; i < spikes; i++) {
+			x = cx + Math.cos(rot) * outerRadius;
+			y = cy + Math.sin(rot) * outerRadius;
+			ctx7.lineTo(x, y)
+			rot += step
+
+			x = cx + Math.cos(rot) * innerRadius;
+			y = cy + Math.sin(rot) * innerRadius;
+			ctx7.lineTo(x, y)
+			rot += step
+		}
+		ctx7.lineTo(cx, cy - outerRadius)
+		ctx7.closePath();
+		ctx7.lineWidth=5;
+		ctx7.strokeStyle='black';
+		ctx7.stroke();
+		ctx7.fill();
+		
+	}
 	
 	//Keep scene updated
 	function fillBackgroundColor(){
