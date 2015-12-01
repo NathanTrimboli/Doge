@@ -16,8 +16,10 @@
 	var ctx5;
 	var ctx6;
 	
-	//Text database
+	//Colors
+	var colors = ["red", "green", "blue", "orange", "purple", "yellow"];
 	
+	//Text database
 	var soText = ['so procedural','so art','so html','so internet','so generated']; //Data 1
 	var muchText = ['much code', 'much A+','much change','much text','much shape']; //Data 2
 	var veryText = ['very zooms','very random','very animation','very colorful','very smooth']; //Data 3
@@ -61,6 +63,9 @@
 	var ySquare = 0;
 	var xTriangle = 0;
 	var yTriangle = 0;
+	var circleColor;
+	var squareColor;
+	var triangleColor;
 	
 	function init() {
 		//Background Layer
@@ -82,7 +87,7 @@
 		
 		
 		//Timers
-		timerShapeReset = setInterval(resetShape, 5000);
+		timerShapeReset = setInterval(resetShape, 10000);
 		timerShape = setInterval(waitShape, 100);
 		timerText = setInterval(waitText, 2000);
 		timerDoge = setInterval(waitDoge, 5000);
@@ -123,56 +128,6 @@
 	function resetShape(){
 		shapeReset = true;
 		//console.log('imageWaiting = false');
-	}
-	function drawCircle() {
-		var radius = 50;
-		//Cordinates
-		x = 10 + xCircle;
-		y = 150 + yCircle;
-		ctx4.beginPath();
-		//Create circle
-		ctx4.arc(x, y, radius, 0, degreesToRadians(360), true);
-		ctx4.fill();
-		xCircle += 500;
-		//console.log('draw circle ' + c);
-		//console.log(xCircle);
-	}
-	
-	function drawSquare() {
-		var radius = 100;
-		//Cordinates
-		x = canvas.width - 10 + xSquare;
-		y = 250 + ySquare;
-		ctx5.beginPath();
-		//Create square
-		ctx5.rect(x,y,radius,radius);
-		ctx5.fill();
-		xSquare-= 500;
-		//console.log('draw square ' + c);
-		//console.log(xSquare);
-	}
-	
-	function drawTraingle(){
-		
-		x = 10 + xTriangle;
-		//x2 = 20 + xTriangle;
-		//y = 350 + yTriangle;
-		//s = 100;
-		ctx6.fillStyle="#A2322E";
-		ctx6.beginPath();
-		ctx6.moveTo(x,x+10);
-		ctx6.lineTo(x + x,10);
-		ctx6.lineTo(x + x + x,x+10);
-		
-		/*ctx6.moveTo(x,x+s);
-		ctx6.lineTo(x,y);
-		ctx6.lineTo(x, y+s);
-		*/
-		ctx6.closePath();
-		ctx6.fill();
-		xTriangle += 500;
-		console.log('draw triangle ' + c);
-		console.log(xTriangle);
 	}
 	
 	function draw(){
@@ -242,7 +197,6 @@
 			}
 			console.log('DRAWTEXT ' + currentText);
 			//randomize color
-			var colors = ["red", "green", "blue", "orange", "purple", "yellow"];
 			color = colors[Math.floor(Math.random()*colors.length)];
 			//randomize placement
 			x1 = Math.floor(Math.random() * (canvas2.width-200));
@@ -276,14 +230,14 @@
 		if (!shapeReset){
 			if (!shapeWaiting){
 			
-				if (c < 500) {
+				if (c < 20) {
 					c++;
 					drawCircle();
 					drawSquare();
 					drawTraingle();
 					shapeWaiting = true;
 				}
-				if (c == 10){
+				if (c == 20){
 					c = 0;
 					xCircle = 0;
 					xSquare = 0;
@@ -291,13 +245,14 @@
 					yCircle += 100;
 					ySquare += 100;
 					yTriangle += 100;
-					
-					
+					circleColor = colors[Math.floor(Math.random()*colors.length)];
+					squareColor = colors[Math.floor(Math.random()*colors.length)];
+					triangleColor = colors[Math.floor(Math.random()*colors.length)];
 					shapeWaiting = true;
 				}
 			}
 		}
-		else if(shapeReset){
+		else if(shapeReset) {
 			xCircle = 0;
 			xSquare = 0;
 			xTriangle = 0;
@@ -308,6 +263,67 @@
 			shapeReset = false;
 		}
 	}
+	
+	function drawCircle() {
+		var radius = 50;
+		//Cordinates
+		x = 10 + xCircle;
+		y = 150 + yCircle;
+		ctx4.fillStyle = circleColor;
+		ctx4.strokeStyle='black';
+		ctx4.stroke();
+		ctx4.beginPath();
+		//Create circle
+		ctx4.arc(x, y, radius, 0, degreesToRadians(360), true);
+		ctx4.fill();
+		xCircle += 100;
+		//console.log('draw circle ' + c);
+		//console.log(xCircle);
+	}
+	
+	function drawSquare() {
+		var radius = 100;
+		//Cordinates
+		x = canvas.width - 10 + xSquare;
+		y = 250 + ySquare;
+		ctx5.fillStyle = squareColor;
+		ctx5.strokeStyle='black';
+		ctx5.stroke();
+		ctx5.beginPath();
+		//Create square
+		ctx5.rect(x,y,radius,radius);
+		ctx5.fill();
+		xSquare-= 100;
+		//console.log('draw square ' + c);
+		//console.log(xSquare);
+	}
+	
+	function drawTraingle() {
+		x = 10 + xTriangle;
+		//x2 = 20 + xTriangle;
+		//y = 350 + yTriangle;
+		//s = 100;
+		
+		ctx6.fillStyle = triangleColor;
+		ctx6.strokeStyle='black';
+		ctx6.stroke();
+		
+		ctx6.beginPath();
+		ctx6.moveTo(x,x+10);
+		ctx6.lineTo(x + x,10);
+		ctx6.lineTo(x + x + x,x+10);
+		
+		/*ctx6.moveTo(x,x+s);
+		ctx6.lineTo(x,y);
+		ctx6.lineTo(x, y+s);
+		*/
+		ctx6.closePath();
+		ctx6.fill();
+		xTriangle += 100;
+		//console.log('draw triangle ' + c);
+		//console.log(xTriangle);
+	}
+	
 	
 	
 	//Keep scene updated
