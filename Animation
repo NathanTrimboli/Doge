@@ -18,6 +18,7 @@
 	
 	//Colors
 	var colors = ["red", "green", "blue", "orange", "purple", "yellow"];
+	var bgColor = 'Tomato';
 	
 	//Text database
 	var soText = ['so procedural','so art','so html','so internet','so generated']; //Data 1
@@ -31,13 +32,13 @@
 	var timerDoge;
 	var timeText;
 	var timerShape;
-	var timerShapeReset;
+	var timerBackgroundReset;
 	
 	//Timer Booleans
 	var imageWaiting = false;
 	var textWaiting = false;
 	var shapeWaiting = false;
-	var shapeReset = false;
+	var backgroundReset = false;
 	var currentImage = '';
 	var currentText = '';
 	var color;
@@ -63,10 +64,10 @@
 	var ySquare = 0;
 	var xTriangle = 0;
 	var yTriangle = 0;
-	var circleColor;
-	var squareColor;
-	var triangleColor;
-	var starColor;
+	var circleColor = 'red';
+	var squareColor = 'blue';
+	var triangleColor = 'green';
+	var starColor = 'yellow';
 	//Star
 	var cx = 0;
 	var cy = 450;
@@ -95,10 +96,14 @@
 		
 		
 		//Timers
-		timerShapeReset = setInterval(resetShape, 12000);
-		timerShape = setInterval(waitShape, 100);
+		timerBackgroundReset = setInterval(resetBackground, 1500);
+		//Controls the speed of the shapes
+		timerShape = setInterval(waitShape, 50);
+		//Controls the speed of the text
 		timerText = setInterval(waitText, 2000);
+		//Controls the loop interval of doge
 		timerDoge = setInterval(waitDoge, 3000);
+		//Constantly checks for a canvas resize
 		timer = setInterval(resizeCanvas, 20);
 		
 	  }
@@ -133,8 +138,8 @@
 	}
 	
 	//Resets shape
-	function resetShape(){
-		shapeReset = true;
+	function resetBackground(){
+		backgroundReset = true;
 		//console.log('imageWaiting = false');
 	}
 	
@@ -252,10 +257,10 @@
 		//Cordinates
 		x = canvas.width - 10 + xSquare;
 		y = 250 + ySquare;
-		ctx5.fillStyle = squareColor;
 		ctx5.lineWidth=5;
 		ctx5.strokeStyle='black';
 		ctx5.stroke();
+		ctx5.fillStyle = squareColor;
 		ctx5.beginPath();
 		//Create square
 		ctx5.rect(x,y,radius,radius);
@@ -360,7 +365,6 @@
 			ytriangle = 0;
 			cy = 450;
 			shapeWaiting = true;
-			shapeReset = false;
 			console.log('RESET SHAPES');
 		}
 	}
@@ -459,10 +463,13 @@
 	*/
 	//Keep scene updated
 	function fillBackgroundColor(){
-		//var colors = ["red", "green", "blue", "orange", "purple", "yellow"];
-		//var bgColor = colors[Math.floor(Math.random() * colors.length)];
-		ctx1.fillStyle = 'white';
+		if (backgroundReset){
+			var colors = ["HotPink", "Chartreuse", "Aqua", "orange", "Tomato", "GoldenRod"];
+			bgColor = colors[Math.floor(Math.random() * colors.length)];
+		}
+		ctx1.fillStyle = bgColor;
 		ctx1.fillRect(0, 0, canvas.width, canvas.height);
+		backgroundReset = false;
 		//draw();
 		
 	}
