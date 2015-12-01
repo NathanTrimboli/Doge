@@ -70,7 +70,7 @@
 	var starColor = 'yellow';
 	//Star
 	var cx = 0;
-	var cy = 450;
+	var cy = 650;
 	var spikes = 12; 
 	var outerRadius = 50; 
 	var innerRadius = 40;
@@ -80,8 +80,9 @@
 		canvas = document.getElementById('canvas');
 		canvas2 = document.getElementById('canvas2');
 		canvas3 =  document.getElementById('canvas3');
+		canvas4 =  document.getElementById('canvas4');
 		ctx1 = canvas.getContext("2d");
-		ctx2 = canvas.getContext("2d");
+		ctx2 = canvas4.getContext("2d");
 		ctx3 = canvas2.getContext("2d");
 		ctx4 = canvas3.getContext("2d");
 		ctx5 = canvas3.getContext("2d");
@@ -117,6 +118,8 @@
         canvas2.height = window.innerHeight;
 		canvas3.width = window.innerWidth;
         canvas3.height = window.innerHeight;
+		canvas4.width = window.innerWidth;
+        canvas4.height = window.innerHeight;
 		fillBackgroundColor();
 		draw();
 	}
@@ -243,7 +246,7 @@
 		var radius = 50;
 		//Cordinates
 		x = 10 + xCircle;
-		y = 150 + yCircle;
+		y = 250 + yCircle;
 		ctx4.strokeStyle='black';
 		ctx4.stroke();
 		ctx4.fillStyle = circleColor;
@@ -256,7 +259,7 @@
 		var radius = 100;
 		//Cordinates
 		x = canvas.width - 10 + xSquare;
-		y = 250 + ySquare;
+		y = 400 + ySquare;
 		ctx5.lineWidth=5;
 		ctx5.strokeStyle='black';
 		ctx5.stroke();
@@ -301,25 +304,19 @@
 		ctx7.fill();
 		
 		//DRAW TRIANGLE
+		var triangleWidth = 100;
+		var triangleHeight = 85;
 		x = 10 + xTriangle;
-		//x2 = 20 + xTriangle;
-		//y = 350 + yTriangle;
-		//s = 100;
+		y = 20 + yTriangle;
 		
 		ctx6.fillStyle = triangleColor;
 		ctx6.lineWidth=5;
 		ctx6.strokeStyle='black';
 		ctx6.stroke();
-		
 		ctx6.beginPath();
-		ctx6.moveTo(x,x+10);
-		ctx6.lineTo(x + x,10);
-		ctx6.lineTo(x + x + x,x+10);
-		
-		//ctx6.moveTo(x,x+s);
-		//ctx6.lineTo(x,y);
-		//ctx6.lineTo(x, y+s);
-		
+		ctx6.moveTo(x,y);
+		ctx6.lineTo(x + triangleWidth / 2, y + triangleHeight);
+		ctx6.lineTo(x - triangleWidth / 2, y + triangleHeight);
 		ctx6.closePath();
 		ctx6.fill();
 		
@@ -362,8 +359,8 @@
 			cx = 0;
 			yCircle = 0;
 			ySquare = 0;
-			ytriangle = 0;
-			cy = 450;
+			yTriangle = 0;
+			cy = 650;
 			shapeWaiting = true;
 			console.log('RESET SHAPES');
 		}
@@ -464,14 +461,13 @@
 	//Keep scene updated
 	function fillBackgroundColor(){
 		if (backgroundReset){
-			var colors = ["HotPink", "Chartreuse", "Aqua", "orange", "Tomato", "GoldenRod"];
+			var colors = ["HotPink", "Chartreuse", "Aqua", "Tomato", "GoldenRod"];
 			bgColor = colors[Math.floor(Math.random() * colors.length)];
 		}
 		ctx1.fillStyle = bgColor;
 		ctx1.fillRect(0, 0, canvas.width, canvas.height);
 		backgroundReset = false;
 		//draw();
-		
 	}
 	
 	//Convert degrees to number based radians
@@ -487,8 +483,10 @@ window.onload = init;
  <canvas id="canvas" width="100" height="100" 
    style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
  <canvas id="canvas2" width="100" height="100" 
-   style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+   style="position: absolute; left: 0; top: 0; z-index: 3;"></canvas>
  <canvas id="canvas3" width="100" height="100" 
+   style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+ <canvas id="canvas4" width="100" height="100" 
    style="position: absolute; left: 0; top: 0; z-index: 2;"></canvas>
 
 </body>	  
