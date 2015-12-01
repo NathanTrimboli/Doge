@@ -182,7 +182,7 @@
 			bCord +=10;
 		}
 		//ctx2.drawImage(doge_image, (canvas.width - doge_image.width+aCord)*.5, (canvas.height - doge_image.height+bCord)*.5, aCord, bCord);
-		ctx2.drawImage(doge_image, (window.innerWidth * .5)-doge_image.width, (window.innerHeight * .5)-doge_image.height, doge_image.width + aCord, doge_image.height + bCord);
+		ctx2.drawImage(doge_image, (window.innerWidth * .5)-(doge_image.width/2), (window.innerHeight * .5)-(doge_image.height/2), doge_image.width + aCord, doge_image.height + bCord);
 		
 	
 	//DRAW TEXT
